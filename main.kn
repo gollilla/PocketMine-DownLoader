@@ -1,0 +1,22 @@
+var wndMain: wnd@Wnd
+var btnDownload: wnd@Btn
+
+func main()
+	do @wndMain :: wnd@makeWnd(null, %normal, 450, 350, "PocketMine-MP ダウンローダー")
+	do @btnDownload :: wnd@makeBtn(@wndMain, 20, 40, 185, 30, %fix, %fix, "Download")
+	do @btnDownload.onPush :: @download
+	while(wnd@act())
+	end while
+end func
+
+func download(sender: wnd@Btn)
+	var dir: []char :: file@exeDir()
+	do @exec(dir ~ "res/download.bat", false)
+end func
+
+func exec(cmd: []char, waitBool: bool): int
+	var path: []char :: "C:\\Windows\\System32\\cmd.exe"
+	var process: task@Process :: task@makeProcess(path, "/c" ~ cmd)
+	var rslt: int :: process.run(waitBool)
+	ret rslt
+end func
